@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Header from "@/components/header";
 import LeaderboardTable from "@/components/leaderboard-table";
-import WeeklyStats from "@/components/weekly-stats";
 import HistoryView from "@/components/history-view";
 import RankingForm from "@/components/ranking-form";
 
@@ -27,7 +26,6 @@ export default function Home() {
           </div>
           
           <LeaderboardTable />
-          <WeeklyStats />
         </main>
       ) : (
         <HistoryView />
