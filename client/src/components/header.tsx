@@ -13,7 +13,7 @@ export default function Header({ currentView, onViewChange, onOpenForm }: Header
             <div className="w-8 h-8 bg-primary-black rounded-lg flex items-center justify-center">
               <span className="text-white font-semibold text-sm">AI</span>
             </div>
-            <h1 className="text-2xl font-semibold text-primary-black">AI Tools Leaderboard</h1>
+            <h1 className="text-2xl font-semibold text-primary-black">KOC tries AI</h1>
           </div>
           <nav className="flex items-center space-x-6">
             <button

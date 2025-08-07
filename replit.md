@@ -1,4 +1,4 @@
-# AI Tools Leaderboard
+# KOC tries AI
 
 ## Overview
 
