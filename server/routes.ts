@@ -47,6 +47,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get weeks at #1 for each tool
+  app.get("/api/rankings/weeks-at-top", async (req, res) => {
+    try {
+      const weeksAtTop = await storage.getWeeksAtTop();
+      res.json(weeksAtTop);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch weeks at top data" });
+    }
+  });
+
   // Create/update weekly rankings
   app.post("/api/rankings", async (req, res) => {
     try {

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { type WeeklyRanking } from "@shared/schema";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { useMemo } from "react";
 
 export default function LeaderboardTable() {
   const { data: currentRankings, isLoading } = useQuery<WeeklyRanking[]>({
@@ -36,10 +37,16 @@ export default function LeaderboardTable() {
     }
   };
 
+  // Query for weeks at #1 data
+  const { data: weeksAtTopData } = useQuery<Array<{toolName: string, count: number}>>(
+    {
+      queryKey: ["/api/rankings/weeks-at-top"],
+      staleTime: 300000, // 5 minutes since this changes rarely
+    }
+  );
+
   const getWeeksAtTop = (toolName: string) => {
-    // For now, return mock data - in a real app this would be calculated from historical data
-    if (toolName === "Claude 3.5 Sonnet") return 2;
-    return 0;
+    return weeksAtTopData?.find(item => item.toolName === toolName)?.count || 0;
   };
 
   const getToolInitial = (toolName: string) => {

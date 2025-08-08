@@ -1,7 +1,7 @@
 import { type WeeklyRanking, type InsertWeeklyRanking, type WeeklyRankingsBatch, weeklyRankings } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
-import { eq, desc, inArray } from "drizzle-orm";
+import { eq, desc, inArray, count } from "drizzle-orm";
 
 export interface IStorage {
   // Weekly Rankings
@@ -10,6 +10,7 @@ export interface IStorage {
   getAllWeeks(): Promise<string[]>;
   getHistoricalRankings(weeks: number): Promise<WeeklyRanking[]>;
   getCurrentWeekRankings(): Promise<WeeklyRanking[]>;
+  getWeeksAtTop(): Promise<Array<{toolName: string, count: number}>>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -74,6 +75,20 @@ export class DatabaseStorage implements IStorage {
   async getCurrentWeekRankings(): Promise<WeeklyRanking[]> {
     const currentWeek = this.getCurrentWeekString();
     return this.getWeeklyRankings(currentWeek);
+  }
+
+  async getWeeksAtTop(): Promise<Array<{toolName: string, count: number}>> {
+    const result = await db
+      .select({
+        toolName: weeklyRankings.toolName,
+        count: count()
+      })
+      .from(weeklyRankings)
+      .where(eq(weeklyRankings.rank, 1))
+      .groupBy(weeklyRankings.toolName)
+      .orderBy(desc(count()));
+    
+    return result;
   }
 }
 
