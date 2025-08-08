@@ -149,7 +149,6 @@ export default function LeaderboardTable() {
                       </div>
                       <div>
                         <h4 className="text-lg font-semibold text-primary-black">{ranking.toolName}</h4>
-                        <p className="text-sm text-cool-grey">{ranking.category}</p>
                       </div>
                     </div>
                   </td>
