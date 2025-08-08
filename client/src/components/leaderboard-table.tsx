@@ -49,20 +49,7 @@ export default function LeaderboardTable() {
     return weeksAtTopData?.find(item => item.toolName === toolName)?.count || 0;
   };
 
-  const getToolInitial = (toolName: string) => {
-    return toolName.charAt(0).toUpperCase();
-  };
 
-  const getGradientClass = (toolName: string) => {
-    const gradients = {
-      "Claude 3.5 Sonnet": "from-purple-600 to-blue-600",
-      "GPT-4 Turbo": "from-green-500 to-teal-600",
-      "Midjourney": "from-blue-600 to-cyan-600",
-      "Notion AI": "from-red-500 to-pink-600",
-      "RunwayML": "from-orange-500 to-red-600",
-    };
-    return gradients[toolName as keyof typeof gradients] || "from-gray-500 to-gray-600";
-  };
 
   if (isLoading) {
     return (
@@ -143,12 +130,7 @@ export default function LeaderboardTable() {
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-10 h-10 bg-gradient-to-br ${getGradientClass(ranking.toolName)} rounded-lg flex items-center justify-center`}>
-                        <span className="text-white font-semibold">{getToolInitial(ranking.toolName)}</span>
-                      </div>
-                      <h4 className="text-lg font-semibold text-primary-black">{ranking.toolName}</h4>
-                    </div>
+                    <h4 className="text-lg font-semibold text-primary-black">{ranking.toolName}</h4>
                   </td>
                   <td className="py-4 px-6 text-right">
                     <span className="text-lg font-semibold text-primary-black">{getWeeksAtTop(ranking.toolName)}</span>
