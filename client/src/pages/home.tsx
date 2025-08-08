@@ -30,7 +30,6 @@ export default function Home() {
                 return `${monday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${sunday.getDate()}, ${monday.getFullYear()}`;
               })()}
             </h2>
-            <p className="text-cool-grey text-lg">Your top 5 AI tools this week</p>
           </div>
           
           <LeaderboardTable />
