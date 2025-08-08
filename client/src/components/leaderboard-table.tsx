@@ -104,10 +104,10 @@ export default function LeaderboardTable() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100 bg-light-grey/30">
-              <th className="text-left py-4 px-8 font-semibold text-cool-grey text-sm uppercase tracking-wider">Rank</th>
-              <th className="text-left py-4 px-4 font-semibold text-cool-grey text-sm uppercase tracking-wider">Change</th>
-              <th className="text-left py-4 px-4 font-semibold text-cool-grey text-sm uppercase tracking-wider">Tool</th>
-              <th className="text-left py-4 px-8 font-semibold text-cool-grey text-sm uppercase tracking-wider">Weeks at #1</th>
+              <th className="text-left py-3 px-6 font-semibold text-cool-grey text-sm uppercase tracking-wider">Rank</th>
+              <th className="text-left py-3 px-4 font-semibold text-cool-grey text-sm uppercase tracking-wider">Change</th>
+              <th className="text-left py-3 px-6 font-semibold text-cool-grey text-sm uppercase tracking-wider">Tool</th>
+              <th className="text-right py-3 px-6 font-semibold text-cool-grey text-sm uppercase tracking-wider">Weeks at #1</th>
             </tr>
           </thead>
           <tbody>
@@ -117,13 +117,13 @@ export default function LeaderboardTable() {
               
               return (
                 <tr key={ranking.id} className="border-b border-gray-50 hover:bg-light-grey/20 transition-colors ranking-item">
-                  <td className="py-6 px-8">
+                  <td className="py-4 px-6">
                     <div className="flex items-center">
-                      <span className="text-2xl font-bold text-primary-black mr-4">{ranking.rank}</span>
-                      <div className={`w-2 h-8 rounded-full ${ranking.rank === 1 ? 'bg-success-green' : 'bg-gray-300'}`}></div>
+                      <span className="text-xl font-bold text-primary-black mr-3">{ranking.rank}</span>
+                      <div className={`w-1.5 h-6 rounded-full ${ranking.rank === 1 ? 'bg-success-green' : 'bg-gray-300'}`}></div>
                     </div>
                   </td>
-                  <td className="py-6 px-4">
+                  <td className="py-4 px-4">
                     <div className="flex items-center">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
                         positionChange.color.includes('success') ? 'bg-success-green/10' :
@@ -142,17 +142,15 @@ export default function LeaderboardTable() {
                       </span>
                     </div>
                   </td>
-                  <td className="py-6 px-4">
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-12 h-12 bg-gradient-to-br ${getGradientClass(ranking.toolName)} rounded-lg flex items-center justify-center`}>
-                        <span className="text-white font-semibold text-lg">{getToolInitial(ranking.toolName)}</span>
+                  <td className="py-4 px-6">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-10 h-10 bg-gradient-to-br ${getGradientClass(ranking.toolName)} rounded-lg flex items-center justify-center`}>
+                        <span className="text-white font-semibold">{getToolInitial(ranking.toolName)}</span>
                       </div>
-                      <div>
-                        <h4 className="text-lg font-semibold text-primary-black">{ranking.toolName}</h4>
-                      </div>
+                      <h4 className="text-lg font-semibold text-primary-black">{ranking.toolName}</h4>
                     </div>
                   </td>
-                  <td className="py-6 px-8">
+                  <td className="py-4 px-6 text-right">
                     <span className="text-lg font-semibold text-primary-black">{getWeeksAtTop(ranking.toolName)}</span>
                   </td>
                 </tr>
