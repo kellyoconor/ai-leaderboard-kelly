@@ -107,7 +107,6 @@ export default function LeaderboardTable() {
               <th className="text-left py-4 px-8 font-semibold text-cool-grey text-sm uppercase tracking-wider">Rank</th>
               <th className="text-left py-4 px-4 font-semibold text-cool-grey text-sm uppercase tracking-wider">Change</th>
               <th className="text-left py-4 px-4 font-semibold text-cool-grey text-sm uppercase tracking-wider">Tool</th>
-              <th className="text-left py-4 px-4 font-semibold text-cool-grey text-sm uppercase tracking-wider">Activity</th>
               <th className="text-left py-4 px-8 font-semibold text-cool-grey text-sm uppercase tracking-wider">Weeks at #1</th>
             </tr>
           </thead>
@@ -153,9 +152,6 @@ export default function LeaderboardTable() {
                         <p className="text-sm text-cool-grey">{ranking.category}</p>
                       </div>
                     </div>
-                  </td>
-                  <td className="py-6 px-4">
-                    <p className="text-cool-grey">{ranking.activity}</p>
                   </td>
                   <td className="py-6 px-8">
                     <span className="text-lg font-semibold text-primary-black">{getWeeksAtTop(ranking.toolName)}</span>
