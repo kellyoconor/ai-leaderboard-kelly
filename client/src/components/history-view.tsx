@@ -78,13 +78,7 @@ export default function HistoryView() {
         </div>
       </div>
 
-      {/* Historical Chart Placeholder */}
-      <div className="bg-white rounded-2xl shadow-card border border-gray-100 p-8 mb-8">
-        <h3 className="text-xl font-semibold text-primary-black mb-6">Ranking Trends</h3>
-        <div className="h-64 bg-light-grey/30 rounded-lg flex items-center justify-center">
-          <p className="text-cool-grey">Interactive ranking trends chart would be implemented here with a charting library like Chart.js or Recharts</p>
-        </div>
-      </div>
+
 
       {/* Historical Rankings Table */}
       {allWeeks && allWeeks.length > 0 && (
