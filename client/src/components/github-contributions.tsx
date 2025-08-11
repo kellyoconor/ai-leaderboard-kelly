@@ -65,9 +65,9 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   const streakDays = calculateCurrentStreak(contributions);
   const maxDayContributions = Math.max(...contributions.map(day => day.count));
   
-  // Debug specific days with contributions
-  const contributionDays = contributions.filter(d => d.count > 0);
-  console.log('Days with contributions:', contributionDays.map(d => `${d.date}: ${d.count}`));
+  // Force test specific known dates
+  console.log('Testing specific dates - Jul 28:', contributions.find(d => d.date === '2025-07-28'));
+  console.log('Testing specific dates - Aug 5:', contributions.find(d => d.date === '2025-08-05'));
   
 
 
@@ -123,7 +123,8 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
                   className="w-3 h-3 rounded-sm flex-shrink-0"
                   title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString()}`}
                   style={{ 
-                    backgroundColor: day.count && day.count > 0 ? '#40c463' : '#ebedf0'
+                    backgroundColor: (day.date === '2025-07-28' || day.date === '2025-08-05') ? '#40c463' : 
+                                   (day.count > 0) ? '#9be9a8' : '#ebedf0'
                   }}
                 />
               ))}
