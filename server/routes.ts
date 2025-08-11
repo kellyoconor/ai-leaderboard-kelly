@@ -104,12 +104,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return generateMockContributions(res);
       }
       
-      // GitHub GraphQL query to get contribution data for specific user
+      // Get current year date range
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const from = `${currentYear}-01-01T00:00:00Z`;
+      const to = `${currentYear}-12-31T23:59:59Z`;
+
+      // GitHub GraphQL query to get contribution data for current year
       const query = `
-        query($username: String!) {
+        query($username: String!, $from: DateTime!, $to: DateTime!) {
           user(login: $username) {
             login
-            contributionsCollection {
+            contributionsCollection(from: $from, to: $to) {
               contributionCalendar {
                 weeks {
                   contributionDays {
@@ -131,7 +137,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         body: JSON.stringify({
           query,
-          variables: { username }
+          variables: { username, from, to }
         })
       });
       
@@ -186,12 +192,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Helper function to generate mock contribution data
   function generateMockContributions(res: any) {
     const contributions = [];
-    const today = new Date();
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(today.getFullYear() - 1);
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const startOfYear = new Date(currentYear, 0, 1);
+    const endOfYear = new Date(currentYear, 11, 31);
     
-    // Generate 365 days of realistic mock data
-    for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+    // Generate current year data
+    for (let d = new Date(startOfYear); d <= endOfYear; d.setDate(d.getDate() + 1)) {
       const dayOfWeek = d.getDay();
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
       
