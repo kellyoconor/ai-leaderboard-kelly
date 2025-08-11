@@ -65,9 +65,8 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   const streakDays = calculateCurrentStreak(contributions);
   const maxDayContributions = Math.max(...contributions.map(day => day.count));
   
-  // Debug the data
-  const sampleContributions = contributions.filter(day => day.count > 0).slice(0, 3);
-  console.log('Sample contributions with count > 0:', sampleContributions);
+  // Simple test: show any contribution as green
+  console.log('Total contributions with count > 0:', contributions.filter(d => d.count > 0).length);
   
 
 
@@ -123,11 +122,7 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
                   className={`w-3 h-3 rounded-sm flex-shrink-0`}
                   title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString()}`}
                   style={{ 
-                    backgroundColor: day.count === 0 ? '#ebedf0' : 
-                                   day.count >= 1 && day.count <= 3 ? '#9be9a8' : 
-                                   day.count >= 4 && day.count <= 6 ? '#40c463' : 
-                                   day.count >= 7 && day.count <= 9 ? '#30a14e' : 
-                                   day.count >= 10 ? '#216e39' : '#ebedf0'
+                    backgroundColor: day.count > 0 ? '#216e39' : '#ebedf0'
                   }}
                 />
               ))}
@@ -140,19 +135,11 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
       <div className="flex items-center justify-between text-xs text-cool-grey">
         <span>Less</span>
         <div className="flex gap-1">
-          {[0, 1, 2, 3, 4].map(level => (
-            <div
-              key={level}
-              className="w-3 h-3 rounded-sm"
-              style={{ 
-                backgroundColor: level === 0 ? '#ebedf0' : 
-                               level === 1 ? '#9be9a8' : 
-                               level === 2 ? '#40c463' : 
-                               level === 3 ? '#30a14e' : 
-                               level === 4 ? '#216e39' : '#ebedf0'
-              }}
-            />
-          ))}
+          <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#ebedf0' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#9be9a8' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#40c463' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#30a14e' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#216e39' }} />
         </div>
         <span>More</span>
       </div>
