@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { type WeeklyRanking } from "@shared/schema";
-import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Trophy } from "lucide-react";
 import { useMemo } from "react";
 
 interface LeaderboardTableProps {
