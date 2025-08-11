@@ -39,7 +39,15 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
   });
 
   const getPositionChange = (toolName: string, currentRank: number) => {
-    if (!lastWeekRankings) return { change: "new", icon: null, color: "text-cool-grey" };
+    // If we don't have last week's data yet, show loading state
+    if (lastWeekRankings === undefined) {
+      return { change: "-", icon: null, color: "text-cool-grey" };
+    }
+    
+    // If we have last week's data but this tool wasn't in it
+    if (!lastWeekRankings) {
+      return { change: "NEW", icon: null, color: "text-cool-grey" };
+    }
     
     const lastWeekRank = lastWeekRankings.find(r => r.toolName === toolName)?.rank;
     
@@ -75,17 +83,39 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
-        <div className="px-8 py-6 border-b border-gray-100">
-          <h3 className="text-xl font-semibold text-primary-black">Current Rankings</h3>
+      <div className="bg-white border border-gray-200">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <h3 className="text-lg font-medium text-primary-black">Rankings</h3>
         </div>
-        <div className="p-8">
-          <div className="animate-pulse space-y-4">
+        
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-gray-200">
+              <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">#</th>
+              <th className="text-left py-2 px-3 font-medium text-cool-grey text-sm">±</th>
+              <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">Tool</th>
+              <th className="text-right py-2 px-4 font-medium text-cool-grey text-sm">Weeks at #1</th>
+            </tr>
+          </thead>
+          <tbody>
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="h-16 bg-light-grey rounded"></div>
+              <tr key={i} className="border-b border-gray-100 animate-pulse">
+                <td className="py-3 px-4">
+                  <div className="h-6 w-4 bg-gray-200 rounded"></div>
+                </td>
+                <td className="py-3 px-3">
+                  <div className="h-4 w-6 bg-gray-200 rounded"></div>
+                </td>
+                <td className="py-3 px-4">
+                  <div className="h-5 w-24 bg-gray-200 rounded"></div>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <div className="h-5 w-4 bg-gray-200 rounded ml-auto"></div>
+                </td>
+              </tr>
             ))}
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
     );
   }
