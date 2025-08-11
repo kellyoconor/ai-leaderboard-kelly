@@ -13,6 +13,8 @@ export default function Home() {
 
   const { data: allWeeks } = useQuery<string[]>({
     queryKey: ["/api/rankings/weeks"],
+    staleTime: 600000, // 10 minutes since week list changes rarely
+    gcTime: 1800000, // Keep in cache for 30 minutes
   });
 
   const getCurrentWeekString = () => {

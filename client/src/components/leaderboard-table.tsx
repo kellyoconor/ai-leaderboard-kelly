@@ -29,6 +29,8 @@ export default function LeaderboardTable({ weekOf, toolSearchQuery = "", weekFil
   const { data: currentRankings, isLoading } = useQuery<WeeklyRanking[]>({
     queryKey: isCurrentWeek ? ["/api/rankings/current"] : ["/api/rankings/week", targetWeek],
     enabled: !!targetWeek,
+    staleTime: 300000, // 5 minutes for rankings data
+    gcTime: 900000, // Keep in cache for 15 minutes
   });
 
   // Get the previous week for comparison
@@ -38,6 +40,8 @@ export default function LeaderboardTable({ weekOf, toolSearchQuery = "", weekFil
   const { data: lastWeekRankings } = useQuery<WeeklyRanking[]>({
     queryKey: ["/api/rankings/week", previousWeek],
     enabled: !!previousWeek,
+    staleTime: 300000, // 5 minutes
+    gcTime: 900000, // Keep in cache for 15 minutes
   });
 
   const getPositionChange = (toolName: string, currentRank: number) => {
@@ -73,7 +77,8 @@ export default function LeaderboardTable({ weekOf, toolSearchQuery = "", weekFil
     {
       queryKey: ["/api/rankings/weeks-at-position", targetWeek],
       queryFn: () => fetch(`/api/rankings/weeks-at-position?upToWeek=${targetWeek}`).then(res => res.json()),
-      staleTime: 300000, // 5 minutes since this changes rarely
+      staleTime: 600000, // 10 minutes since this changes rarely
+      gcTime: 600000, // Keep in cache for 10 minutes
     }
   );
 
