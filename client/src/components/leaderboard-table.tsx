@@ -66,17 +66,17 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
     }
   };
 
-  // Query for weeks at #1 data (contextual to the current week being viewed)
-  const { data: weeksAtTopData } = useQuery<Array<{toolName: string, count: number}>>(
+  // Query for weeks at position data (contextual to the current week being viewed)
+  const { data: weeksAtPositionData } = useQuery<Array<{toolName: string, rank: number, count: number}>>(
     {
-      queryKey: ["/api/rankings/weeks-at-top", targetWeek],
-      queryFn: () => fetch(`/api/rankings/weeks-at-top?upToWeek=${targetWeek}`).then(res => res.json()),
+      queryKey: ["/api/rankings/weeks-at-position", targetWeek],
+      queryFn: () => fetch(`/api/rankings/weeks-at-position?upToWeek=${targetWeek}`).then(res => res.json()),
       staleTime: 300000, // 5 minutes since this changes rarely
     }
   );
 
-  const getWeeksAtTop = (toolName: string) => {
-    return weeksAtTopData?.find(item => item.toolName === toolName)?.count || 0;
+  const getWeeksAtPosition = (toolName: string, currentRank: number) => {
+    return weeksAtPositionData?.find(item => item.toolName === toolName && item.rank === currentRank)?.count || 0;
   };
 
 
@@ -94,7 +94,7 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
               <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">#</th>
               <th className="text-left py-2 px-3 font-medium text-cool-grey text-sm">±</th>
               <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">Tool</th>
-              <th className="text-right py-2 px-4 font-medium text-cool-grey text-sm">Weeks at #1</th>
+              <th className="text-right py-2 px-4 font-medium text-cool-grey text-sm">Weeks at Position</th>
             </tr>
           </thead>
           <tbody>
@@ -159,7 +159,7 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
             <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">#</th>
             <th className="text-left py-2 px-3 font-medium text-cool-grey text-sm">±</th>
             <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">Tool</th>
-            <th className="text-right py-2 px-4 font-medium text-cool-grey text-sm">Weeks at #1</th>
+            <th className="text-right py-2 px-4 font-medium text-cool-grey text-sm">Weeks at Position</th>
           </tr>
         </thead>
         <tbody>
@@ -180,7 +180,7 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
                   <span className="text-base font-medium text-primary-black">{ranking.toolName}</span>
                 </td>
                 <td className="py-3 px-4 text-right">
-                  <span className="text-base font-medium text-primary-black">{getWeeksAtTop(ranking.toolName)}</span>
+                  <span className="text-base font-medium text-primary-black">{getWeeksAtPosition(ranking.toolName, ranking.rank)}</span>
                 </td>
               </tr>
             );

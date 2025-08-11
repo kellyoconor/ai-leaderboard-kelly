@@ -10,7 +10,7 @@ export interface IStorage {
   getAllWeeks(): Promise<string[]>;
   getHistoricalRankings(weeks: number): Promise<WeeklyRanking[]>;
   getCurrentWeekRankings(): Promise<WeeklyRanking[]>;
-  getWeeksAtTop(upToWeek?: string): Promise<Array<{toolName: string, count: number}>>;
+  getWeeksAtPosition(upToWeek?: string): Promise<Array<{toolName: string, rank: number, count: number}>>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -86,30 +86,25 @@ export class DatabaseStorage implements IStorage {
     return [];
   }
 
-  async getWeeksAtTop(upToWeek?: string): Promise<Array<{toolName: string, count: number}>> {
+  async getWeeksAtPosition(upToWeek?: string): Promise<Array<{toolName: string, rank: number, count: number}>> {
     // Build where conditions
-    let whereConditions = [eq(weeklyRankings.rank, 1)];
+    const whereConditions = [];
     
     // If upToWeek is specified, only count weeks up to and including that week
     if (upToWeek) {
-      // Use <= comparison for historical context (weeks up to and including upToWeek)
       whereConditions.push(lte(weeklyRankings.weekOf, upToWeek));
     }
     
     const result = await db
       .select({
         toolName: weeklyRankings.toolName,
+        rank: weeklyRankings.rank,
         count: count()
       })
       .from(weeklyRankings)
-      .where(whereConditions.length > 1 ? 
-        // Multiple conditions: rank = 1 AND weekOf IN (...)
-        and(eq(weeklyRankings.rank, 1), whereConditions[1]) :
-        // Single condition: just rank = 1
-        eq(weeklyRankings.rank, 1)
-      )
-      .groupBy(weeklyRankings.toolName)
-      .orderBy(desc(count()));
+      .where(whereConditions.length > 0 ? whereConditions[0] : undefined)
+      .groupBy(weeklyRankings.toolName, weeklyRankings.rank)
+      .orderBy(weeklyRankings.toolName, weeklyRankings.rank);
     
     return result;
   }

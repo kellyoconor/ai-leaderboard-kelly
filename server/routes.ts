@@ -47,14 +47,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get weeks at #1 for each tool (optionally up to a specific week)
-  app.get("/api/rankings/weeks-at-top", async (req, res) => {
+  // Get weeks at each position for each tool (optionally up to a specific week)
+  app.get("/api/rankings/weeks-at-position", async (req, res) => {
     try {
       const upToWeek = req.query.upToWeek as string | undefined;
-      const weeksAtTop = await storage.getWeeksAtTop(upToWeek);
-      res.json(weeksAtTop);
+      const weeksAtPosition = await storage.getWeeksAtPosition(upToWeek);
+      res.json(weeksAtPosition);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch weeks at top data" });
+      res.status(500).json({ message: "Failed to fetch weeks at position data" });
     }
   });
 
