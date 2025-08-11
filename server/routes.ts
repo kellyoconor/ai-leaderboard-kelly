@@ -99,11 +99,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // This requires authentication, so we'll try with the GitHub token
       const githubToken = process.env.GITHUB_TOKEN;
       
-      // GitHub GraphQL query to get contribution data
-      // First try to get the authenticated user's data if username matches
+      // Check token first
+      if (!githubToken) {
+        return generateMockContributions(res);
+      }
+      
+      // GitHub GraphQL query to get contribution data for specific user
       const query = `
-        query {
-          viewer {
+        query($username: String!) {
+          user(login: $username) {
             login
             contributionsCollection {
               contributionCalendar {
@@ -119,40 +123,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       `;
       
-      let response;
-      
-      if (githubToken) {
-        // Try with token first
-        response = await fetch('https://api.github.com/graphql', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${githubToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query
-          })
-        });
-      }
-      
-      // Check if we have a valid response
-      if (!githubToken) {
-        return generateMockContributions(res);
-      }
+      const response = await fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          variables: { username }
+        })
+      });
       
       if (!response || !response.ok) {
+        console.error('GitHub API response error:', response?.status, response?.statusText);
         return generateMockContributions(res);
       }
       
       const data = await response.json();
       
       if (data.errors) {
+        console.error('GitHub GraphQL errors:', data.errors);
         throw new Error(data.errors[0].message);
+      }
+      
+      if (!data.data || !data.data.user) {
+        console.error('No user data returned from GitHub GraphQL API', data);
+        throw new Error('User not found');
       }
       
       // Transform the data to our format
       const contributions = [];
-      const weeks = data.data.viewer.contributionsCollection.contributionCalendar.weeks;
+      const weeks = data.data.user.contributionsCollection.contributionCalendar.weeks;
       
       for (const week of weeks) {
         for (const day of week.contributionDays) {
