@@ -20,21 +20,11 @@ export default function Home() {
     return monday.toISOString().split('T')[0];
   };
 
-  // If selectedWeekIndex is 0, show actual current week, otherwise show historical week
-  const currentWeek = selectedWeekIndex === 0 ? getCurrentWeekString() : (allWeeks?.[selectedWeekIndex - 1] || '');
-  
-  console.log('Navigation Debug:', {
-    selectedWeekIndex, 
-    currentWeek, 
-    getCurrentWeekString: getCurrentWeekString(),
-    allWeeks: allWeeks?.slice(0, 3)
-  });
-
   const formatWeekTitle = (weekOf: string) => {
     if (!weekOf) {
       // If no weekOf provided, show current week
-      const currentWeek = getCurrentWeekString();
-      const weekDate = new Date(currentWeek);
+      const currentWeekStr = getCurrentWeekString();
+      const weekDate = new Date(currentWeekStr);
       const monday = new Date(weekDate);
       const sunday = new Date(weekDate);
       sunday.setDate(monday.getDate() + 6);
@@ -48,6 +38,9 @@ export default function Home() {
     
     return `Week of ${monday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${sunday.getDate()}, ${monday.getFullYear()}`;
   };
+
+  // If selectedWeekIndex is 0, show actual current week, otherwise show historical week
+  const currentWeek = selectedWeekIndex === 0 ? getCurrentWeekString() : (allWeeks?.[selectedWeekIndex - 1] || '');
 
   // Left arrow goes to older weeks, right arrow to newer weeks
   // When selectedWeekIndex is 0, we show current week (2025-08-11)
