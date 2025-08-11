@@ -2,7 +2,7 @@
 
 ## Overview
 
-An AI Tools Leaderboard application that allows users to track and rank their top 5 AI tools on a weekly basis. The application features a modern, clean interface built with React and TypeScript, displaying current week rankings, historical data, and weekly statistics. Users can view trending data, compare tool performance across weeks, and update their rankings through an interactive form interface.
+An AI Tools Leaderboard application that allows users to track and rank their top 5 AI tools on a weekly basis. The application features a minimalist, clean interface built with React and TypeScript, displaying current week rankings, historical data, and contextual position statistics. Users can view trending data, compare tool performance across weeks with "Weeks at Position" insights, and update their rankings through an interactive form interface.
 
 ## User Preferences
 
@@ -42,6 +42,7 @@ Preferred communication style: Simple, everyday language.
 - **GET /api/rankings/week/:weekOf**: Get rankings for a specific week
 - **GET /api/rankings/weeks**: List all available weeks
 - **GET /api/rankings/history**: Fetch historical rankings with configurable week limit
+- **GET /api/rankings/weeks-at-position**: Get contextual data showing weeks each tool spent at each position
 - **POST /api/rankings**: Create or update weekly rankings (batch operation)
 
 ### Component Architecture
@@ -50,6 +51,7 @@ Preferred communication style: Simple, everyday language.
 - **History View**: Historical data comparison and trend analysis
 - **Ranking Form**: Modal form for updating weekly rankings with validation
 - **Weekly Stats**: Dashboard metrics and activity summaries
+- **Position Context**: "Weeks at Position" feature showing how long each tool has held their current rank
 
 ### Design System
 - **Color Palette**: Black and white with neutral grays, success green, and warning amber
