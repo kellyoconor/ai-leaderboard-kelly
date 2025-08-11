@@ -4,10 +4,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Header from "@/components/header";
 import LeaderboardTable from "@/components/leaderboard-table";
 import RankingForm from "@/components/ranking-form";
+import { SearchFilter } from "@/components/search-filter";
+import { GitHubProfile } from "@/components/github-profile";
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const [selectedWeekIndex, setSelectedWeekIndex] = useState(0); // 0 = current week
+  const [toolSearchQuery, setToolSearchQuery] = useState("");
+  const [weekFilter, setWeekFilter] = useState<string | null>(null);
 
   const { data: allWeeks } = useQuery<string[]>({
     queryKey: ["/api/rankings/weeks"],
@@ -93,7 +97,28 @@ export default function Home() {
           </div>
         </div>
         
-        <LeaderboardTable weekOf={currentWeek} />
+        {/* Search and Filter */}
+        <SearchFilter
+          onToolSearch={setToolSearchQuery}
+          onWeekFilter={setWeekFilter}
+          availableWeeks={allWeeks || []}
+          selectedWeek={weekFilter}
+          toolSearchQuery={toolSearchQuery}
+        />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <LeaderboardTable 
+              weekOf={currentWeek} 
+              toolSearchQuery={toolSearchQuery}
+              weekFilter={weekFilter}
+            />
+          </div>
+          
+          <div className="lg:col-span-1">
+            <GitHubProfile />
+          </div>
+        </div>
       </main>
 
       {showForm && (

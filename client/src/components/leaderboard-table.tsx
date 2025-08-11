@@ -5,9 +5,11 @@ import { useMemo } from "react";
 
 interface LeaderboardTableProps {
   weekOf?: string;
+  toolSearchQuery?: string;
+  weekFilter?: string | null;
 }
 
-export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
+export default function LeaderboardTable({ weekOf, toolSearchQuery = "", weekFilter }: LeaderboardTableProps) {
   const { data: allWeeks } = useQuery<string[]>({
     queryKey: ["/api/rankings/weeks"],
   });
@@ -79,6 +81,25 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
     return weeksAtPositionData?.find(item => item.toolName === toolName && item.rank === currentRank)?.count || 0;
   };
 
+  // Filter rankings based on search and week filter
+  const filteredRankings = useMemo(() => {
+    if (!currentRankings) return [];
+    
+    let filtered = currentRankings;
+    
+    // Apply tool search filter
+    if (toolSearchQuery.trim()) {
+      filtered = filtered.filter(ranking => 
+        ranking.toolName.toLowerCase().includes(toolSearchQuery.toLowerCase())
+      );
+    }
+    
+    // Week filter is handled at the query level, not here
+    // since we're already showing a specific week's data
+    
+    return filtered;
+  }, [currentRankings, toolSearchQuery]);
+
 
 
   if (isLoading) {
@@ -119,6 +140,10 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
       </div>
     );
   }
+
+  // Show search results or empty state
+  const hasSearchQuery = toolSearchQuery.trim().length > 0;
+  const showingFilteredResults = hasSearchQuery && filteredRankings.length === 0 && currentRankings && currentRankings.length > 0;
 
   if (!currentRankings || currentRankings.length === 0) {
     // Check if this is the current week (no data yet) vs historical week
@@ -163,7 +188,14 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
           </tr>
         </thead>
         <tbody>
-          {currentRankings.map((ranking) => {
+          {showingFilteredResults && (
+            <tr>
+              <td colSpan={4} className="py-8 text-center text-cool-grey">
+                No tools found matching "{toolSearchQuery}"
+              </td>
+            </tr>
+          )}
+          {!showingFilteredResults && filteredRankings.map((ranking) => {
             const positionChange = getPositionChange(ranking.toolName, ranking.rank);
             
             return (
