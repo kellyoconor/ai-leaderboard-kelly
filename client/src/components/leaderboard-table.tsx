@@ -164,8 +164,8 @@ export default function LeaderboardTable({ weekOf, toolSearchQuery = "", weekFil
         <div className="p-6 text-center space-y-3">
           {isCurrentWeek ? (
             <>
-              <p className="text-lg text-primary-black font-medium">Ready for this week's rankings?</p>
-              <p className="text-cool-grey">Click "Update Rankings" to add your top 5 AI tools for this week.</p>
+              <p className="text-lg text-primary-black font-medium">This week's rankings</p>
+              <p className="text-cool-grey">Stay tuned for this week's top 5 AI tools!</p>
             </>
           ) : (
             <p className="text-cool-grey">No rankings available for this week.</p>
