@@ -90,6 +90,9 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   for (let i = 0; i < contributions.length; i += 7) {
     weeks.push(contributions.slice(i, i + 7));
   }
+  
+  console.log('Grouped into weeks:', weeks.length, 'weeks');
+  console.log('First week sample:', weeks[0]);
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6">
@@ -116,14 +119,15 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
 
       {/* Contributions Grid */}
       <div className="mb-4">
-        <div className="grid grid-flow-col auto-cols-max gap-1 overflow-x-auto">
+        <div className="flex gap-1 overflow-x-auto" style={{ minHeight: '120px' }}>
           {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="grid grid-rows-7 gap-1">
+            <div key={weekIndex} className="flex flex-col gap-1">
               {week.map((day, dayIndex) => (
                 <div
                   key={`${weekIndex}-${dayIndex}`}
-                  className={`w-3 h-3 rounded-sm ${getContributionColor(day.level)}`}
+                  className={`w-3 h-3 rounded-sm ${getContributionColor(day.level)} flex-shrink-0`}
                   title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString()}`}
+                  style={{ backgroundColor: day.level === 0 ? '#ebedf0' : undefined }}
                 />
               ))}
             </div>
