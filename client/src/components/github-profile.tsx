@@ -24,8 +24,8 @@ interface GitHubRepo {
 }
 
 export function GitHubProfile() {
-  const [username, setUsername] = useState("koconor");
-  const [searchedUsername, setSearchedUsername] = useState("koconor");
+  const [username, setUsername] = useState("kellyoconor");
+  const [searchedUsername, setSearchedUsername] = useState("kellyoconor");
 
   const { data: user, isLoading: userLoading, error: userError } = useQuery<GitHubUser>({
     queryKey: ["/api/github/user", searchedUsername],

@@ -109,9 +109,16 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
         </div>
       </div>
 
-      {/* Custom Contribution Calendar */}
+      {/* GitHub Contributions Calendar */}
       <div className="mb-4">
-        <ContributionCalendar contributions={contributions} />
+        <div style={{ backgroundColor: '#f6f8fa', padding: '16px', borderRadius: '8px' }}>
+          <GitHubCalendar 
+            username={username}
+            blockSize={10}
+            blockMargin={2}
+            colorScheme="light"
+          />
+        </div>
       </div>
 
       <div className="text-xs text-cool-grey mt-2">
