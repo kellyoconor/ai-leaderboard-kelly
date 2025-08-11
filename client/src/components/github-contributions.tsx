@@ -163,7 +163,7 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
               <div className="flex items-center gap-4 text-xs text-cool-grey mt-1">
                 <span>@{user.login}</span>
                 <span>{user.public_repos} repos</span>
-                <span>{user.followers} followers</span>
+                {user.followers > 0 && <span>{user.followers} followers</span>}
               </div>
             </div>
           </div>
