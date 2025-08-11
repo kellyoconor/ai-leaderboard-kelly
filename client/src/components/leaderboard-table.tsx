@@ -12,8 +12,17 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
     queryKey: ["/api/rankings/weeks"],
   });
 
-  const isCurrentWeek = !weekOf || weekOf === allWeeks?.[0];
-  const targetWeek = weekOf || allWeeks?.[0] || '';
+  // Determine if this is the actual current week (today's week)
+  const getCurrentWeekString = () => {
+    const now = new Date();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - now.getDay() + 1);
+    return monday.toISOString().split('T')[0];
+  };
+
+  const actualCurrentWeek = getCurrentWeekString();
+  const isCurrentWeek = weekOf === actualCurrentWeek;
+  const targetWeek = weekOf || actualCurrentWeek;
 
   const { data: currentRankings, isLoading } = useQuery<WeeklyRanking[]>({
     queryKey: isCurrentWeek ? ["/api/rankings/current"] : ["/api/rankings/week", targetWeek],
