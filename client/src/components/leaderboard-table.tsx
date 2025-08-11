@@ -58,18 +58,7 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
     }
   };
 
-  // Query for weeks at #1 data (contextual to the current week being viewed)
-  const { data: weeksAtTopData } = useQuery<Array<{toolName: string, count: number}>>(
-    {
-      queryKey: ["/api/rankings/weeks-at-top", targetWeek],
-      queryFn: () => fetch(`/api/rankings/weeks-at-top?upToWeek=${targetWeek}`).then(res => res.json()),
-      staleTime: 300000, // 5 minutes since this changes rarely
-    }
-  );
-
-  const getWeeksAtTop = (toolName: string) => {
-    return weeksAtTopData?.find(item => item.toolName === toolName)?.count || 0;
-  };
+  // Removed weeks at #1 data for simplicity
 
 
 
@@ -99,11 +88,11 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
     });
     
     return (
-      <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
-        <div className="px-8 py-6 border-b border-gray-100">
-          <h3 className="text-xl font-semibold text-primary-black">Current Rankings</h3>
+      <div className="bg-white border border-gray-200">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <h3 className="text-lg font-medium text-primary-black">Rankings</h3>
         </div>
-        <div className="p-8 text-center space-y-4">
+        <div className="p-6 text-center space-y-3">
           {isCurrentWeek ? (
             <>
               <p className="text-lg text-primary-black font-medium">Ready for this week's rankings?</p>
@@ -118,65 +107,41 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
-      <div className="px-8 py-6 border-b border-gray-100">
-        <h3 className="text-xl font-semibold text-primary-black">Current Rankings</h3>
+    <div className="bg-white border border-gray-200">
+      <div className="px-4 py-3 border-b border-gray-200">
+        <h3 className="text-lg font-medium text-primary-black">Rankings</h3>
       </div>
       
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-100 bg-light-grey/30">
-              <th className="text-left py-3 px-6 font-semibold text-cool-grey text-sm uppercase tracking-wider">Rank</th>
-              <th className="text-left py-3 px-4 font-semibold text-cool-grey text-sm uppercase tracking-wider">Change</th>
-              <th className="text-left py-3 px-6 font-semibold text-cool-grey text-sm uppercase tracking-wider">Tool</th>
-              <th className="text-right py-3 px-6 font-semibold text-cool-grey text-sm uppercase tracking-wider">Weeks at #1</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentRankings.map((ranking) => {
-              const positionChange = getPositionChange(ranking.toolName, ranking.rank);
-              const Icon = positionChange.icon;
-              
-              return (
-                <tr key={ranking.id} className="border-b border-gray-50 hover:bg-light-grey/20 transition-colors ranking-item">
-                  <td className="py-4 px-6">
-                    <div className="flex items-center">
-                      <span className="text-xl font-bold text-primary-black mr-3">{ranking.rank}</span>
-                      <div className={`w-1.5 h-6 rounded-full ${ranking.rank === 1 ? 'bg-success-green' : 'bg-gray-300'}`}></div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                        positionChange.color.includes('success') ? 'bg-success-green/10' :
-                        positionChange.color.includes('warning') ? 'bg-warning-amber/10' : 'bg-gray-100'
-                      }`}>
-                        {Icon ? (
-                          <Icon className={`w-3 h-3 ${positionChange.color}`} />
-                        ) : (
-                          <span className={`text-xs font-medium ${positionChange.color}`}>
-                            {positionChange.change === "NEW" ? "NEW" : "0"}
-                          </span>
-                        )}
-                      </div>
-                      <span className={`ml-2 text-sm font-medium ${positionChange.color}`}>
-                        {positionChange.change}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">
-                    <h4 className="text-lg font-semibold text-primary-black">{ranking.toolName}</h4>
-                  </td>
-                  <td className="py-4 px-6 text-right">
-                    <span className="text-lg font-semibold text-primary-black">{getWeeksAtTop(ranking.toolName)}</span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <table className="w-full">
+        <thead>
+          <tr className="border-b border-gray-200">
+            <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">#</th>
+            <th className="text-left py-2 px-3 font-medium text-cool-grey text-sm">±</th>
+            <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">Tool</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentRankings.map((ranking) => {
+            const positionChange = getPositionChange(ranking.toolName, ranking.rank);
+            
+            return (
+              <tr key={ranking.id} className="border-b border-gray-100">
+                <td className="py-3 px-4">
+                  <span className="text-lg font-bold text-primary-black">{ranking.rank}</span>
+                </td>
+                <td className="py-3 px-3">
+                  <span className={`text-sm font-medium ${positionChange.color}`}>
+                    {positionChange.change}
+                  </span>
+                </td>
+                <td className="py-3 px-4">
+                  <span className="text-base font-medium text-primary-black">{ranking.toolName}</span>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
