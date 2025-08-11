@@ -81,13 +81,27 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
   }
 
   if (!currentRankings || currentRankings.length === 0) {
+    // Check if this is the current week (no data yet) vs historical week
+    const isNewWeek = isCurrentWeek && weekOf === new Date().toISOString().split('T')[0].replace(/\d{2}$/, (match) => {
+      const day = parseInt(match);
+      const weekStart = day - new Date().getDay() + 1;
+      return weekStart.toString().padStart(2, '0');
+    });
+    
     return (
       <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
         <div className="px-8 py-6 border-b border-gray-100">
           <h3 className="text-xl font-semibold text-primary-black">Current Rankings</h3>
         </div>
-        <div className="p-8 text-center">
-          <p className="text-cool-grey">No rankings available for this week. Click "Update Rankings" to add your first set of rankings.</p>
+        <div className="p-8 text-center space-y-4">
+          {isCurrentWeek ? (
+            <>
+              <p className="text-lg text-primary-black font-medium">Ready for this week's rankings?</p>
+              <p className="text-cool-grey">Click "Update Rankings" to add your top 5 AI tools for this week.</p>
+            </>
+          ) : (
+            <p className="text-cool-grey">No rankings available for this week.</p>
+          )}
         </div>
       </div>
     );

@@ -73,12 +73,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getCurrentWeekRankings(): Promise<WeeklyRanking[]> {
-    // Get the most recent week instead of calculating current date
-    const allWeeks = await this.getAllWeeks();
-    if (allWeeks.length === 0) return [];
+    // First try to get rankings for the actual current week
+    const actualCurrentWeek = this.getCurrentWeekString();
+    const currentWeekRankings = await this.getWeeklyRankings(actualCurrentWeek);
     
-    const mostRecentWeek = allWeeks[0]; // weeks are ordered desc
-    return this.getWeeklyRankings(mostRecentWeek);
+    // If current week has data, return it
+    if (currentWeekRankings.length > 0) {
+      return currentWeekRankings;
+    }
+    
+    // Otherwise return empty array to indicate new week needs data
+    return [];
   }
 
   async getWeeksAtTop(): Promise<Array<{toolName: string, count: number}>> {

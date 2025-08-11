@@ -13,10 +13,26 @@ export default function Home() {
     queryKey: ["/api/rankings/weeks"],
   });
 
-  const currentWeek = allWeeks?.[selectedWeekIndex] || '';
+  const getCurrentWeekString = () => {
+    const now = new Date();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - now.getDay() + 1);
+    return monday.toISOString().split('T')[0];
+  };
+
+  // If selectedWeekIndex is 0, show actual current week, otherwise show historical week
+  const currentWeek = selectedWeekIndex === 0 ? getCurrentWeekString() : (allWeeks?.[selectedWeekIndex - 1] || '');
 
   const formatWeekTitle = (weekOf: string) => {
-    if (!weekOf) return '';
+    if (!weekOf) {
+      // If no weekOf provided, show current week
+      const currentWeek = getCurrentWeekString();
+      const weekDate = new Date(currentWeek);
+      const monday = new Date(weekDate);
+      const sunday = new Date(weekDate);
+      sunday.setDate(monday.getDate() + 6);
+      return `Week of ${monday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${sunday.getDate()}, ${monday.getFullYear()}`;
+    }
     
     const weekDate = new Date(weekOf);
     const monday = new Date(weekDate);
