@@ -26,8 +26,9 @@ export default function Home() {
     return `Week of ${monday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${sunday.getDate()}, ${monday.getFullYear()}`;
   };
 
-  const canGoPrevious = allWeeks && selectedWeekIndex < allWeeks.length - 1;
-  const canGoNext = selectedWeekIndex > 0;
+  // Left arrow goes to older weeks (higher index), right arrow to newer weeks (lower index)
+  const canGoOlder = allWeeks && selectedWeekIndex < allWeeks.length - 1;
+  const canGoNewer = selectedWeekIndex > 0;
 
   return (
     <div className="min-h-screen bg-white">
@@ -38,9 +39,10 @@ export default function Home() {
           <div className="flex items-center justify-center space-x-6">
             <button
               onClick={() => setSelectedWeekIndex(prev => prev + 1)}
-              disabled={!canGoPrevious}
+              disabled={!canGoOlder}
+              title="Go to older week"
               className={`p-2 rounded-lg transition-colors ${
-                canGoPrevious 
+                canGoOlder 
                   ? 'text-primary-black hover:bg-light-grey' 
                   : 'text-gray-300 cursor-not-allowed'
               }`}
@@ -59,9 +61,10 @@ export default function Home() {
             
             <button
               onClick={() => setSelectedWeekIndex(prev => prev - 1)}
-              disabled={!canGoNext}
+              disabled={!canGoNewer}
+              title="Go to newer week"
               className={`p-2 rounded-lg transition-colors ${
-                canGoNext 
+                canGoNewer 
                   ? 'text-primary-black hover:bg-light-grey' 
                   : 'text-gray-300 cursor-not-allowed'
               }`}

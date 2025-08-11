@@ -73,8 +73,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getCurrentWeekRankings(): Promise<WeeklyRanking[]> {
-    const currentWeek = this.getCurrentWeekString();
-    return this.getWeeklyRankings(currentWeek);
+    // Get the most recent week instead of calculating current date
+    const allWeeks = await this.getAllWeeks();
+    if (allWeeks.length === 0) return [];
+    
+    const mostRecentWeek = allWeeks[0]; // weeks are ordered desc
+    return this.getWeeklyRankings(mostRecentWeek);
   }
 
   async getWeeksAtTop(): Promise<Array<{toolName: string, count: number}>> {
