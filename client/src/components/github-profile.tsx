@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Github, ExternalLink, Star, GitFork, Users } from "lucide-react";
+import { GitHubContributions } from "./github-contributions";
 
 interface GitHubUser {
   login: string;
@@ -181,6 +182,11 @@ export function GitHubProfile() {
               Loading repositories...
             </div>
           )}
+
+          {/* GitHub Contributions */}
+          <div className="mt-6">
+            <GitHubContributions username={user.login} />
+          </div>
         </div>
       )}
     </div>

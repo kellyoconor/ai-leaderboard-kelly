@@ -91,6 +91,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/github/contributions/:username", async (req, res) => {
+    try {
+      const { username } = req.params;
+      
+      // Generate mock contribution data for the past year
+      // In a real app, you'd fetch this from GitHub's GraphQL API or scrape it
+      const contributions = [];
+      const today = new Date();
+      const oneYearAgo = new Date();
+      oneYearAgo.setFullYear(today.getFullYear() - 1);
+      
+      // Generate 365 days of mock data
+      for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+        const dayOfWeek = d.getDay();
+        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        
+        // Mock realistic contribution patterns
+        let count = 0;
+        const random = Math.random();
+        
+        if (!isWeekend && random > 0.3) {
+          // Weekdays: more likely to have contributions
+          if (random > 0.9) count = Math.floor(Math.random() * 15) + 10; // Heavy days
+          else if (random > 0.7) count = Math.floor(Math.random() * 8) + 3; // Medium days
+          else if (random > 0.5) count = Math.floor(Math.random() * 3) + 1; // Light days
+        } else if (isWeekend && random > 0.7) {
+          // Weekends: less likely but still some activity
+          count = Math.floor(Math.random() * 5) + 1;
+        }
+        
+        // Determine level (0-4)
+        let level = 0;
+        if (count >= 10) level = 4;
+        else if (count >= 7) level = 3;
+        else if (count >= 4) level = 2;
+        else if (count >= 1) level = 1;
+        
+        contributions.push({
+          date: d.toISOString().split('T')[0],
+          count,
+          level
+        });
+      }
+      
+      res.json(contributions);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch GitHub contributions" });
+    }
+  });
+
   // Create/update weekly rankings
   app.post("/api/rankings", async (req, res) => {
     try {
