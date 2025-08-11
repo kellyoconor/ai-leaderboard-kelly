@@ -43,7 +43,7 @@ export function GitHubProfile() {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
+    <div className="bg-white border border-gray-200 rounded-lg p-6 w-full overflow-hidden">
       <div className="flex items-center gap-2 mb-4">
         <Github className="h-5 w-5" />
         <h3 className="text-lg font-medium text-primary-black">GitHub Profile</h3>
@@ -135,7 +135,7 @@ export function GitHubProfile() {
           </div>
 
           {/* GitHub Contributions */}
-          <div className="mt-6">
+          <div className="mt-6 w-full">
             <GitHubContributions username={user.login} />
           </div>
         </div>

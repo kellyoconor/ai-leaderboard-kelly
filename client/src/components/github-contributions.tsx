@@ -113,7 +113,7 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
+    <div className="bg-white border border-gray-200 rounded-lg p-6 w-full">
       <div className="flex items-center gap-2 mb-4">
         <Calendar className="h-5 w-5 text-cool-grey" />
         <h4 className="text-lg font-medium text-primary-black">GitHub Contributions</h4>
@@ -137,13 +137,16 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
 
       {/* GitHub Contributions Calendar */}
       <div className="mb-4">
-        <div style={{ backgroundColor: '#f6f8fa', padding: '16px', borderRadius: '8px' }}>
-          <GitHubCalendar 
-            username={username}
-            blockSize={10}
-            blockMargin={2}
-            colorScheme="light"
-          />
+        <div className="w-full overflow-x-auto">
+          <div style={{ backgroundColor: '#f6f8fa', padding: '16px', borderRadius: '8px', minWidth: '720px' }}>
+            <GitHubCalendar 
+              username={username}
+              blockSize={11}
+              blockMargin={2}
+              colorScheme="light"
+              fontSize={12}
+            />
+          </div>
         </div>
       </div>
 

@@ -106,8 +106,8 @@ export default function Home() {
           toolSearchQuery={toolSearchQuery}
         />
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="xl:col-span-1">
             <LeaderboardTable 
               weekOf={currentWeek} 
               toolSearchQuery={toolSearchQuery}
@@ -115,7 +115,7 @@ export default function Home() {
             />
           </div>
           
-          <div className="lg:col-span-1">
+          <div className="xl:col-span-1">
             <GitHubProfile />
           </div>
         </div>
