@@ -33,11 +33,7 @@ export function GitHubProfile() {
     enabled: !!searchedUsername,
   });
 
-  const { data: repos, isLoading: reposLoading } = useQuery<GitHubRepo[]>({
-    queryKey: ["/api/github/repos", searchedUsername],
-    queryFn: () => fetch(`/api/github/repos/${searchedUsername}`).then(res => res.json()),
-    enabled: !!searchedUsername && !!user,
-  });
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,56 +128,6 @@ export function GitHubProfile() {
               <span className="text-cool-grey">{user.following} following</span>
             </div>
           </div>
-
-          {/* Top Repositories */}
-          {repos && repos.length > 0 && (
-            <div>
-              <h5 className="font-medium text-primary-black mb-3">Top Repositories</h5>
-              <div className="space-y-3">
-                {repos.slice(0, 3).map((repo) => (
-                  <div key={repo.name} className="border border-gray-100 rounded-md p-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <a
-                          href={repo.html_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-blue-600 hover:text-blue-800 text-sm"
-                        >
-                          {repo.name}
-                        </a>
-                        {repo.description && (
-                          <p className="text-xs text-cool-grey mt-1">{repo.description}</p>
-                        )}
-                        <div className="flex items-center gap-3 mt-2 text-xs text-cool-grey">
-                          {repo.language && (
-                            <span className="flex items-center gap-1">
-                              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                              {repo.language}
-                            </span>
-                          )}
-                          <span className="flex items-center gap-1">
-                            <Star className="h-3 w-3" />
-                            {repo.stargazers_count}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <GitFork className="h-3 w-3" />
-                            {repo.forks_count}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {reposLoading && (
-            <div className="text-center text-cool-grey text-sm">
-              Loading repositories...
-            </div>
-          )}
 
           {/* GitHub Contributions */}
           <div className="mt-6">
