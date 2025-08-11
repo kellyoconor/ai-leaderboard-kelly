@@ -58,7 +58,18 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
     }
   };
 
-  // Removed weeks at #1 data for simplicity
+  // Query for weeks at #1 data (contextual to the current week being viewed)
+  const { data: weeksAtTopData } = useQuery<Array<{toolName: string, count: number}>>(
+    {
+      queryKey: ["/api/rankings/weeks-at-top", targetWeek],
+      queryFn: () => fetch(`/api/rankings/weeks-at-top?upToWeek=${targetWeek}`).then(res => res.json()),
+      staleTime: 300000, // 5 minutes since this changes rarely
+    }
+  );
+
+  const getWeeksAtTop = (toolName: string) => {
+    return weeksAtTopData?.find(item => item.toolName === toolName)?.count || 0;
+  };
 
 
 
@@ -118,6 +129,7 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
             <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">#</th>
             <th className="text-left py-2 px-3 font-medium text-cool-grey text-sm">±</th>
             <th className="text-left py-2 px-4 font-medium text-cool-grey text-sm">Tool</th>
+            <th className="text-right py-2 px-4 font-medium text-cool-grey text-sm">Weeks at #1</th>
           </tr>
         </thead>
         <tbody>
@@ -136,6 +148,9 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
                 </td>
                 <td className="py-3 px-4">
                   <span className="text-base font-medium text-primary-black">{ranking.toolName}</span>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <span className="text-base font-medium text-primary-black">{getWeeksAtTop(ranking.toolName)}</span>
                 </td>
               </tr>
             );
