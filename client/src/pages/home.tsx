@@ -22,6 +22,13 @@ export default function Home() {
 
   // If selectedWeekIndex is 0, show actual current week, otherwise show historical week
   const currentWeek = selectedWeekIndex === 0 ? getCurrentWeekString() : (allWeeks?.[selectedWeekIndex - 1] || '');
+  
+  console.log('Navigation Debug:', {
+    selectedWeekIndex, 
+    currentWeek, 
+    getCurrentWeekString: getCurrentWeekString(),
+    allWeeks: allWeeks?.slice(0, 3)
+  });
 
   const formatWeekTitle = (weekOf: string) => {
     if (!weekOf) {
@@ -42,8 +49,10 @@ export default function Home() {
     return `Week of ${monday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${sunday.getDate()}, ${monday.getFullYear()}`;
   };
 
-  // Left arrow goes to older weeks (higher index), right arrow to newer weeks (lower index)
-  const canGoOlder = allWeeks && selectedWeekIndex < allWeeks.length - 1;
+  // Left arrow goes to older weeks, right arrow to newer weeks
+  // When selectedWeekIndex is 0, we show current week (2025-08-11)
+  // When selectedWeekIndex is 1, we show first historical week (2025-08-04)
+  const canGoOlder = allWeeks && (selectedWeekIndex === 0 || selectedWeekIndex < allWeeks.length);
   const canGoNewer = selectedWeekIndex > 0;
 
   return (
