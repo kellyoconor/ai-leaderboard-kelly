@@ -3,18 +3,30 @@ import { type WeeklyRanking } from "@shared/schema";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { useMemo } from "react";
 
-export default function LeaderboardTable() {
-  const { data: currentRankings, isLoading } = useQuery<WeeklyRanking[]>({
-    queryKey: ["/api/rankings/current"],
-  });
+interface LeaderboardTableProps {
+  weekOf?: string;
+}
 
+export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
   const { data: allWeeks } = useQuery<string[]>({
     queryKey: ["/api/rankings/weeks"],
   });
 
+  const isCurrentWeek = !weekOf || weekOf === allWeeks?.[0];
+  const targetWeek = weekOf || allWeeks?.[0] || '';
+
+  const { data: currentRankings, isLoading } = useQuery<WeeklyRanking[]>({
+    queryKey: isCurrentWeek ? ["/api/rankings/current"] : ["/api/rankings/week", targetWeek],
+    enabled: !!targetWeek,
+  });
+
+  // Get the previous week for comparison
+  const currentWeekIndex = allWeeks?.indexOf(targetWeek) || 0;
+  const previousWeek = allWeeks?.[currentWeekIndex + 1];
+
   const { data: lastWeekRankings } = useQuery<WeeklyRanking[]>({
-    queryKey: ["/api/rankings/week", allWeeks?.[1]],
-    enabled: !!allWeeks?.[1],
+    queryKey: ["/api/rankings/week", previousWeek],
+    enabled: !!previousWeek,
   });
 
   const getPositionChange = (toolName: string, currentRank: number) => {
