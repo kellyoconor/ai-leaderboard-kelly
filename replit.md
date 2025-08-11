@@ -1,13 +1,15 @@
-# KOC tries AI
+# KOC does AI
 
 ## Overview
 
-An AI Tools Leaderboard application that allows users to track and rank their top 5 AI tools on a weekly basis. The application features a minimalist, clean interface built with React and TypeScript, displaying current week rankings, historical data, and contextual position statistics. Users can view trending data, compare tool performance across weeks with "Weeks at Position" insights, update their rankings through an interactive form interface, and view their authentic GitHub profile with real contribution data automatically loaded.
+An AI Tools Leaderboard application that displays top 5 AI tools rankings on a weekly basis. The application features a minimalist, clean interface built with React and TypeScript, displaying current week rankings, historical data, and contextual position statistics. Users can view trending data, compare tool performance across weeks with "Weeks at Position" insights, and view authentic GitHub profile with real contribution data automatically loaded. The dashboard is read-only for public visitors.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
-GitHub username: koconor (automatically load profile without search)
+GitHub username: kellyoconor (automatically load profile without search)
+Application title: "KOC does AI"
+Public access: Read-only dashboard (no update functionality for visitors)
 
 ## System Architecture
 
@@ -47,10 +49,10 @@ GitHub username: koconor (automatically load profile without search)
 - **POST /api/rankings**: Create or update weekly rankings (batch operation)
 
 ### Component Architecture
-- **Header Component**: Navigation and view switching with update ranking trigger
-- **Leaderboard Table**: Current week rankings display with position change indicators
-- **History View**: Historical data comparison and trend analysis
-- **Ranking Form**: Modal form for updating weekly rankings with validation
+- **Header Component**: Centered title display ("KOC does AI")
+- **Leaderboard Table**: Current week rankings display with position change indicators and trophy icon
+- **GitHub Profile**: Compact profile section with GitHub icon and custom contribution calendar
+- **GitHub Contributions**: Custom contribution calendar starting from January 2025 without day labels
 - **Weekly Stats**: Dashboard metrics and activity summaries
 - **Position Context**: "Weeks at Position" feature showing how long each tool has held their current rank
 
