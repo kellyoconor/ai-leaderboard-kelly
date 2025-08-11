@@ -1,7 +1,7 @@
 import { type WeeklyRanking, type InsertWeeklyRanking, type WeeklyRankingsBatch, weeklyRankings } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
-import { eq, desc, inArray, count } from "drizzle-orm";
+import { eq, desc, inArray, count, and, lte } from "drizzle-orm";
 
 export interface IStorage {
   // Weekly Rankings
@@ -10,7 +10,7 @@ export interface IStorage {
   getAllWeeks(): Promise<string[]>;
   getHistoricalRankings(weeks: number): Promise<WeeklyRanking[]>;
   getCurrentWeekRankings(): Promise<WeeklyRanking[]>;
-  getWeeksAtTop(): Promise<Array<{toolName: string, count: number}>>;
+  getWeeksAtTop(upToWeek?: string): Promise<Array<{toolName: string, count: number}>>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -86,14 +86,28 @@ export class DatabaseStorage implements IStorage {
     return [];
   }
 
-  async getWeeksAtTop(): Promise<Array<{toolName: string, count: number}>> {
+  async getWeeksAtTop(upToWeek?: string): Promise<Array<{toolName: string, count: number}>> {
+    // Build where conditions
+    let whereConditions = [eq(weeklyRankings.rank, 1)];
+    
+    // If upToWeek is specified, only count weeks up to and including that week
+    if (upToWeek) {
+      // Use <= comparison for historical context (weeks up to and including upToWeek)
+      whereConditions.push(lte(weeklyRankings.weekOf, upToWeek));
+    }
+    
     const result = await db
       .select({
         toolName: weeklyRankings.toolName,
         count: count()
       })
       .from(weeklyRankings)
-      .where(eq(weeklyRankings.rank, 1))
+      .where(whereConditions.length > 1 ? 
+        // Multiple conditions: rank = 1 AND weekOf IN (...)
+        and(eq(weeklyRankings.rank, 1), whereConditions[1]) :
+        // Single condition: just rank = 1
+        eq(weeklyRankings.rank, 1)
+      )
       .groupBy(weeklyRankings.toolName)
       .orderBy(desc(count()));
     

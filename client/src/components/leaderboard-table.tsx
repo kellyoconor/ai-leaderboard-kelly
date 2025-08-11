@@ -58,10 +58,11 @@ export default function LeaderboardTable({ weekOf }: LeaderboardTableProps) {
     }
   };
 
-  // Query for weeks at #1 data
+  // Query for weeks at #1 data (contextual to the current week being viewed)
   const { data: weeksAtTopData } = useQuery<Array<{toolName: string, count: number}>>(
     {
-      queryKey: ["/api/rankings/weeks-at-top"],
+      queryKey: ["/api/rankings/weeks-at-top", targetWeek],
+      queryFn: () => fetch(`/api/rankings/weeks-at-top?upToWeek=${targetWeek}`).then(res => res.json()),
       staleTime: 300000, // 5 minutes since this changes rarely
     }
   );
