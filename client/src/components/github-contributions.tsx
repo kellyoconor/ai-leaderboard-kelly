@@ -61,6 +61,9 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   const totalContributions = contributions.reduce((sum, day) => sum + day.count, 0);
   const streakDays = calculateCurrentStreak(contributions);
   const maxDayContributions = Math.max(...contributions.map(day => day.count));
+  
+  // Debug GitHubCalendar component
+  console.log('GitHubCalendar component props:', { username, totalContributions });
 
   // Calculate current streak
   function calculateCurrentStreak(contributions: ContributionDay[]): number {
@@ -106,14 +109,19 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
         </div>
       </div>
 
-      {/* GitHub Calendar Component */}
+      {/* Debug and GitHub Calendar Component */}
       <div className="mb-4">
-        <GitHubCalendar 
-          username={username} 
-          colorScheme="light"
-          fontSize={12}
-          blockSize={12}
-        />
+        <div className="text-xs text-gray-500 mb-2">
+          Testing GitHubCalendar component for username: {username}
+        </div>
+        <div style={{ backgroundColor: '#f6f8fa', padding: '16px', borderRadius: '8px' }}>
+          <GitHubCalendar 
+            username={username}
+            blockSize={10}
+            blockMargin={2}
+            colorScheme="light"
+          />
+        </div>
       </div>
 
       <div className="text-xs text-cool-grey mt-2">
