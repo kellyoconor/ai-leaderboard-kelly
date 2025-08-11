@@ -1,11 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import { Calendar } from "lucide-react";
+import { Calendar, Github, ExternalLink, Users } from "lucide-react";
 import GitHubCalendar from 'react-github-calendar';
 
 interface ContributionDay {
   date: string;
   count: number;
   level: number; // 0-4 intensity level
+}
+
+interface GitHubUser {
+  login: string;
+  name: string;
+  bio: string;
+  avatar_url: string;
+  html_url: string;
+  public_repos: number;
+  followers: number;
+  following: number;
 }
 
 interface GitHubContributionsProps {
@@ -16,6 +27,12 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   const { data: contributions, isLoading, error } = useQuery<ContributionDay[]>({
     queryKey: ["/api/github/contributions", username],
     queryFn: () => fetch(`/api/github/contributions/${username}`).then(res => res.json()),
+    enabled: !!username,
+  });
+
+  const { data: user, isLoading: userLoading } = useQuery<GitHubUser>({
+    queryKey: ["/api/github/user", username],
+    queryFn: () => fetch(`/api/github/user/${username}`).then(res => res.json()),
     enabled: !!username,
   });
 
@@ -114,9 +131,64 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 w-full">
+      <div className="flex items-center gap-2 mb-6">
+        <Github className="h-5 w-5 text-cool-grey" />
+        <h4 className="text-lg font-medium text-primary-black">GitHub Profile</h4>
+      </div>
+
+      {/* GitHub Profile Section */}
+      {user && (
+        <div className="mb-6 pb-6 border-b border-gray-200">
+          <div className="flex items-center gap-4 mb-4">
+            <img 
+              src={user.avatar_url} 
+              alt={`${user.login}'s avatar`}
+              className="w-16 h-16 rounded-full border border-gray-200"
+            />
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h5 className="text-lg font-medium text-primary-black">
+                  {user.name || user.login}
+                </h5>
+                <a
+                  href={user.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cool-grey hover:text-primary-black transition-colors"
+                  title="View GitHub Profile"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              </div>
+              <p className="text-cool-grey text-sm">@{user.login}</p>
+              {user.bio && (
+                <p className="text-sm text-primary-black mt-2">{user.bio}</p>
+              )}
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="flex gap-6 text-sm">
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+              <span className="text-cool-grey">{user.public_repos} repos</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Users className="h-3 w-3 text-cool-grey" />
+              <span className="text-cool-grey">{user.followers} followers</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Users className="h-3 w-3 text-cool-grey" />
+              <span className="text-cool-grey">{user.following} following</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Contributions Header */}
       <div className="flex items-center gap-2 mb-4">
         <Calendar className="h-5 w-5 text-cool-grey" />
-        <h4 className="text-lg font-medium text-primary-black">GitHub Contributions</h4>
+        <h5 className="text-lg font-medium text-primary-black">Contributions</h5>
       </div>
 
       {/* Stats */}
