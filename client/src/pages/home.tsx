@@ -24,14 +24,15 @@ export default function Home() {
     if (!weekOf) {
       // If no weekOf provided, show current week
       const currentWeekStr = getCurrentWeekString();
-      const weekDate = new Date(currentWeekStr);
+      const weekDate = new Date(currentWeekStr + 'T00:00:00'); // Force local timezone
       const monday = new Date(weekDate);
       const sunday = new Date(weekDate);
       sunday.setDate(monday.getDate() + 6);
       return `Week of ${monday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${sunday.getDate()}, ${monday.getFullYear()}`;
     }
     
-    const weekDate = new Date(weekOf);
+    // weekOf should already be a Monday date (e.g., "2025-08-04")
+    const weekDate = new Date(weekOf + 'T00:00:00'); // Force local timezone
     const monday = new Date(weekDate);
     const sunday = new Date(weekDate);
     sunday.setDate(monday.getDate() + 6);
