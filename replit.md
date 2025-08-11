@@ -2,7 +2,7 @@
 
 ## Overview
 
-An AI Tools Leaderboard application that allows users to track and rank their top 5 AI tools on a weekly basis. The application features a minimalist, clean interface built with React and TypeScript, displaying current week rankings, historical data, and contextual position statistics. Users can view trending data, compare tool performance across weeks with "Weeks at Position" insights, and update their rankings through an interactive form interface.
+An AI Tools Leaderboard application that allows users to track and rank their top 5 AI tools on a weekly basis. The application features a minimalist, clean interface built with React and TypeScript, displaying current week rankings, historical data, and contextual position statistics. Users can view trending data, compare tool performance across weeks with "Weeks at Position" insights, update their rankings through an interactive form interface, and view their authentic GitHub profile with real contribution data automatically loaded.
 
 ## User Preferences
 

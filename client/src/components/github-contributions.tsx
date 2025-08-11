@@ -65,9 +65,7 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   const streakDays = calculateCurrentStreak(contributions);
   const maxDayContributions = Math.max(...contributions.map(day => day.count));
   
-  // Debug: check if we have any contributions with level > 0
-  const nonZeroContributions = contributions.filter(day => day.count > 0);
-  console.log('Non-zero contributions:', nonZeroContributions.length, 'out of', contributions.length);
+
 
   // Get contribution level color
   const getContributionColor = (level: number) => {
