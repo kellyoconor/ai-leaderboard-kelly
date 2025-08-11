@@ -138,16 +138,16 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
 
       {/* GitHub Profile Section */}
       {user && (
-        <div className="mb-6 pb-6 border-b border-gray-200">
-          <div className="flex items-center gap-4 mb-4">
+        <div className="mb-4 pb-4 border-b border-gray-200">
+          <div className="flex items-center gap-3">
             <img 
               src={user.avatar_url} 
               alt={`${user.login}'s avatar`}
-              className="w-16 h-16 rounded-full border border-gray-200"
+              className="w-10 h-10 rounded-full border border-gray-200"
             />
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h5 className="text-lg font-medium text-primary-black">
+              <div className="flex items-center gap-2">
+                <h5 className="font-medium text-primary-black">
                   {user.name || user.login}
                 </h5>
                 <a
@@ -157,29 +157,14 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
                   className="text-cool-grey hover:text-primary-black transition-colors"
                   title="View GitHub Profile"
                 >
-                  <ExternalLink className="h-4 w-4" />
+                  <ExternalLink className="h-3 w-3" />
                 </a>
               </div>
-              <p className="text-cool-grey text-sm">@{user.login}</p>
-              {user.bio && (
-                <p className="text-sm text-primary-black mt-2">{user.bio}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="flex gap-6 text-sm">
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span className="text-cool-grey">{user.public_repos} repos</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Users className="h-3 w-3 text-cool-grey" />
-              <span className="text-cool-grey">{user.followers} followers</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Users className="h-3 w-3 text-cool-grey" />
-              <span className="text-cool-grey">{user.following} following</span>
+              <div className="flex items-center gap-4 text-xs text-cool-grey mt-1">
+                <span>@{user.login}</span>
+                <span>{user.public_repos} repos</span>
+                <span>{user.followers} followers</span>
+              </div>
             </div>
           </div>
         </div>
