@@ -109,7 +109,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   contributionDays {
                     date
                     contributionCount
-                    contributionLevel
                   }
                 }
               }
@@ -121,6 +120,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let response;
       
       if (githubToken) {
+        console.log('Making GitHub GraphQL API call for user:', username);
         // Try with token first
         response = await fetch('https://api.github.com/graphql', {
           method: 'POST',
@@ -133,12 +133,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
             variables: { username }
           })
         });
+        console.log('GitHub API response status:', response.status);
       }
       
-      // If token fails or no token, fall back to mock data for now
-      if (!githubToken || !response || !response.ok) {
-        console.log('GitHub API failed, using mock data. Token status:', !!githubToken, 'Response status:', response?.status);
-        console.log('Token preview:', githubToken ? githubToken.substring(0, 20) + '...' : 'none');
+      // Check if we have a valid response
+      if (!githubToken) {
+        console.log('No GitHub token found, using mock data');
+        return generateMockContributions(res);
+      }
+      
+      if (!response || !response.ok) {
+        console.log('GitHub API failed, using mock data. Response status:', response?.status);
         
         if (response) {
           const errorText = await response.text();
@@ -160,16 +165,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       for (const week of weeks) {
         for (const day of week.contributionDays) {
+          const count = day.contributionCount;
+          let level = 0;
+          if (count >= 10) level = 4;
+          else if (count >= 7) level = 3;
+          else if (count >= 4) level = 2;
+          else if (count >= 1) level = 1;
+          
           contributions.push({
             date: day.date,
-            count: day.contributionCount,
-            level: day.contributionLevel === 'NONE' ? 0 :
-                   day.contributionLevel === 'FIRST_QUARTILE' ? 1 :
-                   day.contributionLevel === 'SECOND_QUARTILE' ? 2 :
-                   day.contributionLevel === 'THIRD_QUARTILE' ? 3 : 4
+            count: count,
+            level: level
           });
         }
       }
+      
+      console.log('Successfully fetched real GitHub contributions:', contributions.length, 'days');
       
       res.json(contributions);
     } catch (error) {
