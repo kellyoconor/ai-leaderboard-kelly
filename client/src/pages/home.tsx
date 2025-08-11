@@ -3,12 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Header from "@/components/header";
 import LeaderboardTable from "@/components/leaderboard-table";
-import RankingForm from "@/components/ranking-form";
 import { SearchFilter } from "@/components/search-filter";
 import { GitHubContributions } from "@/components/github-contributions";
 
 export default function Home() {
-  const [showForm, setShowForm] = useState(false);
   const [selectedWeekIndex, setSelectedWeekIndex] = useState(0); // 0 = current week
   const [toolSearchQuery, setToolSearchQuery] = useState("");
   const [weekFilter, setWeekFilter] = useState<string | null>(null);
@@ -55,7 +53,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header onOpenForm={() => setShowForm(true)} />
+      <Header />
       
       <main className="max-w-6xl mx-auto px-8 py-12">
         <div className="mb-12 text-center">
@@ -117,10 +115,6 @@ export default function Home() {
           <GitHubContributions username="kellyoconor" />
         </div>
       </main>
-
-      {showForm && (
-        <RankingForm onClose={() => setShowForm(false)} />
-      )}
     </div>
   );
 }
