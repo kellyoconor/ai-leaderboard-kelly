@@ -156,7 +156,10 @@ export default function LeaderboardTable({ weekOf, toolSearchQuery = "", weekFil
     return (
       <div className="bg-white border border-gray-200">
         <div className="px-4 py-3 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-primary-black">Rankings</h3>
+          <div className="flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-cool-grey" />
+            <h3 className="text-lg font-medium text-primary-black">Rankings</h3>
+          </div>
         </div>
         <div className="p-6 text-center space-y-3">
           {isCurrentWeek ? (
@@ -175,7 +178,10 @@ export default function LeaderboardTable({ weekOf, toolSearchQuery = "", weekFil
   return (
     <div className="bg-white border border-gray-200">
       <div className="px-4 py-3 border-b border-gray-200">
-        <h3 className="text-lg font-medium text-primary-black">Rankings</h3>
+        <div className="flex items-center gap-2">
+          <Trophy className="h-5 w-5 text-cool-grey" />
+          <h3 className="text-lg font-medium text-primary-black">Rankings</h3>
+        </div>
       </div>
       
       <table className="w-full">
