@@ -62,8 +62,34 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   const streakDays = calculateCurrentStreak(contributions);
   const maxDayContributions = Math.max(...contributions.map(day => day.count));
   
-  // Debug GitHubCalendar component
-  console.log('GitHubCalendar component props:', { username, totalContributions });
+  // Get date range
+  const getDateRange = (contributions: ContributionDay[]): string => {
+    if (!contributions || contributions.length === 0) return '';
+    
+    const sortedDates = contributions
+      .map(c => new Date(c.date))
+      .sort((a, b) => a.getTime() - b.getTime());
+    
+    const startDate = sortedDates[0];
+    const endDate = sortedDates[sortedDates.length - 1];
+    const today = new Date();
+    
+    const formatDate = (date: Date) => {
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        year: 'numeric'
+      });
+    };
+    
+    // Check if end date is recent (within last 7 days)
+    const daysDiff = Math.floor((today.getTime() - endDate.getTime()) / (1000 * 60 * 60 * 24));
+    const isRecent = daysDiff <= 7;
+    
+    return `${formatDate(startDate)} - ${formatDate(endDate)}${isRecent ? ' (current)' : ''}`;
+  };
+  
+  const dateRange = getDateRange(contributions);
 
   // Calculate current streak
   function calculateCurrentStreak(contributions: ContributionDay[]): number {
@@ -122,7 +148,7 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
       </div>
 
       <div className="text-xs text-cool-grey mt-2">
-        last year
+        {dateRange || 'last year'}
       </div>
     </div>
   );
