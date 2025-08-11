@@ -297,21 +297,7 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
         <h5 className="text-lg font-medium text-primary-black">Contributions</h5>
       </div>
 
-      {/* Stats */}
-      <div className="flex gap-6 mb-4 text-sm">
-        <div>
-          <span className="font-semibold text-primary-black">{totalContributions}</span>
-          <span className="text-cool-grey ml-1">contributions</span>
-        </div>
-        <div>
-          <span className="font-semibold text-primary-black">{streakDays}</span>
-          <span className="text-cool-grey ml-1">day streak</span>
-        </div>
-        <div>
-          <span className="font-semibold text-primary-black">{maxDayContributions}</span>
-          <span className="text-cool-grey ml-1">max in a day</span>
-        </div>
-      </div>
+
 
       {/* GitHub Contributions Calendar */}
       <div className="mb-4">
