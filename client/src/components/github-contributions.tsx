@@ -65,8 +65,9 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   const streakDays = calculateCurrentStreak(contributions);
   const maxDayContributions = Math.max(...contributions.map(day => day.count));
   
-  // Simple test: show any contribution as green
-  console.log('Total contributions with count > 0:', contributions.filter(d => d.count > 0).length);
+  // Debug specific days with contributions
+  const contributionDays = contributions.filter(d => d.count > 0);
+  console.log('Days with contributions:', contributionDays.map(d => `${d.date}: ${d.count}`));
   
 
 
@@ -119,10 +120,10 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
               {week.map((day, dayIndex) => (
                 <div
                   key={`${weekIndex}-${dayIndex}`}
-                  className={`w-3 h-3 rounded-sm flex-shrink-0`}
+                  className="w-3 h-3 rounded-sm flex-shrink-0"
                   title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString()}`}
                   style={{ 
-                    backgroundColor: day.count > 0 ? '#216e39' : '#ebedf0'
+                    backgroundColor: day.count && day.count > 0 ? '#40c463' : '#ebedf0'
                   }}
                 />
               ))}
