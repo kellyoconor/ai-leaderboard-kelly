@@ -24,8 +24,8 @@ interface GitHubRepo {
 }
 
 export function GitHubProfile() {
-  const [username, setUsername] = useState("");
-  const [searchedUsername, setSearchedUsername] = useState("");
+  const [username, setUsername] = useState("koconor");
+  const [searchedUsername, setSearchedUsername] = useState("koconor");
 
   const { data: user, isLoading: userLoading, error: userError } = useQuery<GitHubUser>({
     queryKey: ["/api/github/user", searchedUsername],
@@ -49,24 +49,29 @@ export function GitHubProfile() {
         <h3 className="text-lg font-medium text-primary-black">GitHub Profile</h3>
       </div>
 
-      {/* Search Form */}
-      <form onSubmit={handleSearch} className="mb-6">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Enter GitHub username..."
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-primary-black text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Search
-          </button>
-        </div>
-      </form>
+      {/* Optional Search Form - initially hidden */}
+      <details className="mb-6">
+        <summary className="cursor-pointer text-sm text-cool-grey hover:text-primary-black">
+          Change GitHub username
+        </summary>
+        <form onSubmit={handleSearch} className="mt-3">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Enter GitHub username..."
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 bg-primary-black text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Update
+            </button>
+          </div>
+        </form>
+      </details>
 
       {/* Loading State */}
       {userLoading && (

@@ -7,6 +7,7 @@ An AI Tools Leaderboard application that allows users to track and rank their to
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+GitHub username: koconor (automatically load profile without search)
 
 ## System Architecture
 
