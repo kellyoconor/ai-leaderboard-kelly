@@ -100,9 +100,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const githubToken = process.env.GITHUB_TOKEN;
       
       // GitHub GraphQL query to get contribution data
+      // First try to get the authenticated user's data if username matches
       const query = `
-        query($username: String!) {
-          user(login: $username) {
+        query {
+          viewer {
+            login
             contributionsCollection {
               contributionCalendar {
                 weeks {
@@ -128,8 +130,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            query,
-            variables: { username }
+            query
           })
         });
       }
@@ -151,7 +152,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Transform the data to our format
       const contributions = [];
-      const weeks = data.data.user.contributionsCollection.contributionCalendar.weeks;
+      const weeks = data.data.viewer.contributionsCollection.contributionCalendar.weeks;
       
       for (const week of weeks) {
         for (const day of week.contributionDays) {
