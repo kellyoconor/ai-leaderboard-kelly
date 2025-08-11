@@ -134,10 +134,7 @@ export function GitHubProfile() {
             </div>
           </div>
 
-          {/* GitHub Contributions */}
-          <div className="mt-6 w-full">
-            <GitHubContributions username={user.login} />
-          </div>
+
         </div>
       )}
     </div>

@@ -138,13 +138,13 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
       {/* GitHub Contributions Calendar */}
       <div className="mb-4">
         <div className="w-full overflow-x-auto">
-          <div style={{ backgroundColor: '#f6f8fa', padding: '16px', borderRadius: '8px', minWidth: '720px' }}>
+          <div style={{ backgroundColor: '#f6f8fa', padding: '20px', borderRadius: '8px', minWidth: '900px' }}>
             <GitHubCalendar 
               username={username}
-              blockSize={11}
-              blockMargin={2}
+              blockSize={13}
+              blockMargin={3}
               colorScheme="light"
-              fontSize={12}
+              fontSize={14}
             />
           </div>
         </div>

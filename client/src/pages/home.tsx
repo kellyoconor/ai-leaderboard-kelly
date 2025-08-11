@@ -6,6 +6,7 @@ import LeaderboardTable from "@/components/leaderboard-table";
 import RankingForm from "@/components/ranking-form";
 import { SearchFilter } from "@/components/search-filter";
 import { GitHubProfile } from "@/components/github-profile";
+import { GitHubContributions } from "@/components/github-contributions";
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
@@ -106,8 +107,8 @@ export default function Home() {
           toolSearchQuery={toolSearchQuery}
         />
         
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          <div className="xl:col-span-1">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
             <LeaderboardTable 
               weekOf={currentWeek} 
               toolSearchQuery={toolSearchQuery}
@@ -115,9 +116,14 @@ export default function Home() {
             />
           </div>
           
-          <div className="xl:col-span-1">
+          <div className="lg:col-span-1">
             <GitHubProfile />
           </div>
+        </div>
+        
+        {/* GitHub Contributions - Full Width Below Rankings */}
+        <div className="mt-8">
+          <GitHubContributions username="kellyoconor" />
         </div>
       </main>
 
