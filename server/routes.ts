@@ -139,6 +139,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!githubToken || !response || !response.ok) {
         console.log('GitHub API failed, using mock data. Token status:', !!githubToken, 'Response status:', response?.status);
         console.log('Token preview:', githubToken ? githubToken.substring(0, 20) + '...' : 'none');
+        
+        if (response) {
+          const errorText = await response.text();
+          console.log('GitHub API error response:', errorText);
+        }
+        
         return generateMockContributions(res);
       }
       
