@@ -79,7 +79,6 @@ function CustomContributionCalendar({ contributions }: { contributions: Contribu
     <div className="contribution-calendar">
       {/* Month labels */}
       <div className="flex mb-2">
-        <div className="w-3"></div> {/* Space for day labels */}
         <div className="flex-1 flex justify-between text-xs text-gray-600">
           {monthLabels.map(month => (
             <span key={month}>{month}</span>
@@ -89,16 +88,6 @@ function CustomContributionCalendar({ contributions }: { contributions: Contribu
       
       {/* Calendar grid */}
       <div className="flex">
-        {/* Day labels */}
-        <div className="flex flex-col text-xs text-gray-600 mr-2">
-          <div className="h-3 mb-1"></div> {/* Space for top alignment */}
-          {['Mon', 'Wed', 'Fri'].map((day, index) => (
-            <div key={day} className="h-3 mb-1 flex items-center" style={{ marginTop: index === 0 ? '13px' : '13px' }}>
-              {day}
-            </div>
-          ))}
-        </div>
-        
         {/* Contribution squares */}
         <div className="flex gap-1">
           {weeks.map((week, weekIndex) => (
