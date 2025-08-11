@@ -14,12 +14,7 @@ interface GitHubContributionsProps {
 export function GitHubContributions({ username }: GitHubContributionsProps) {
   const { data: contributions, isLoading, error } = useQuery<ContributionDay[]>({
     queryKey: ["/api/github/contributions", username],
-    queryFn: async () => {
-      const response = await fetch(`/api/github/contributions/${username}`);
-      const data = await response.json();
-      console.log('Contributions data received:', data?.length, 'items');
-      return data;
-    },
+    queryFn: () => fetch(`/api/github/contributions/${username}`).then(res => res.json()),
     enabled: !!username,
   });
 
@@ -54,7 +49,6 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   }
 
   if (error || !contributions) {
-    console.log('Contributions error or no data:', error, contributions?.length);
     return (
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <div className="flex items-center gap-2 mb-4">
@@ -65,8 +59,6 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
       </div>
     );
   }
-
-  console.log('Rendering contributions component with data:', contributions.length, 'days');
 
   // Calculate stats
   const totalContributions = contributions.reduce((sum, day) => sum + day.count, 0);
@@ -90,9 +82,6 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   for (let i = 0; i < contributions.length; i += 7) {
     weeks.push(contributions.slice(i, i + 7));
   }
-  
-  console.log('Grouped into weeks:', weeks.length, 'weeks');
-  console.log('First week sample:', weeks[0]);
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6">

@@ -120,7 +120,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let response;
       
       if (githubToken) {
-        console.log('Making GitHub GraphQL API call for user:', username);
         // Try with token first
         response = await fetch('https://api.github.com/graphql', {
           method: 'POST',
@@ -133,23 +132,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             variables: { username }
           })
         });
-        console.log('GitHub API response status:', response.status);
       }
       
       // Check if we have a valid response
       if (!githubToken) {
-        console.log('No GitHub token found, using mock data');
         return generateMockContributions(res);
       }
       
       if (!response || !response.ok) {
-        console.log('GitHub API failed, using mock data. Response status:', response?.status);
-        
-        if (response) {
-          const errorText = await response.text();
-          console.log('GitHub API error response:', errorText);
-        }
-        
         return generateMockContributions(res);
       }
       
@@ -180,7 +170,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
-      console.log('Successfully fetched real GitHub contributions:', contributions.length, 'days');
+
       
       res.json(contributions);
     } catch (error) {
