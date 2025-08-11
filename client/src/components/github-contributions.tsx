@@ -64,6 +64,10 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   const totalContributions = contributions.reduce((sum, day) => sum + day.count, 0);
   const streakDays = calculateCurrentStreak(contributions);
   const maxDayContributions = Math.max(...contributions.map(day => day.count));
+  
+  // Debug: check if we have any contributions with level > 0
+  const nonZeroContributions = contributions.filter(day => day.count > 0);
+  console.log('Non-zero contributions:', nonZeroContributions.length, 'out of', contributions.length);
 
   // Get contribution level color
   const getContributionColor = (level: number) => {
@@ -114,9 +118,15 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
               {week.map((day, dayIndex) => (
                 <div
                   key={`${weekIndex}-${dayIndex}`}
-                  className={`w-3 h-3 rounded-sm ${getContributionColor(day.level)} flex-shrink-0`}
+                  className={`w-3 h-3 rounded-sm flex-shrink-0`}
                   title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString()}`}
-                  style={{ backgroundColor: day.level === 0 ? '#ebedf0' : undefined }}
+                  style={{ 
+                    backgroundColor: day.level === 0 ? '#ebedf0' : 
+                                   day.level === 1 ? '#9be9a8' : 
+                                   day.level === 2 ? '#40c463' : 
+                                   day.level === 3 ? '#30a14e' : 
+                                   day.level === 4 ? '#216e39' : '#ebedf0'
+                  }}
                 />
               ))}
             </div>
@@ -131,7 +141,14 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
           {[0, 1, 2, 3, 4].map(level => (
             <div
               key={level}
-              className={`w-3 h-3 rounded-sm ${getContributionColor(level)}`}
+              className="w-3 h-3 rounded-sm"
+              style={{ 
+                backgroundColor: level === 0 ? '#ebedf0' : 
+                               level === 1 ? '#9be9a8' : 
+                               level === 2 ? '#40c463' : 
+                               level === 3 ? '#30a14e' : 
+                               level === 4 ? '#216e39' : '#ebedf0'
+              }}
             />
           ))}
         </div>
